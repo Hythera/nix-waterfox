@@ -77,7 +77,7 @@ The second way is to install Waterfox on your NixOS system. While you can use th
 }:
 {
   environment.systemPackages = [
-    inputs.waterfox.packages.${pkgs.system}.waterfox-bin
+    inputs.waterfox.packages.${pkgs.stdenv.hostPlatform.system}.waterfox-bin
   ]
 }
 ```
