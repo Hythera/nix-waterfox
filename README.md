@@ -4,7 +4,7 @@
 <h1 align="center">Nix Waterfox</h1>
 
 <p align="center">
-<a href="https://www.waterfox.com/download"><img src="https://img.shields.io/badge/version-6.6.13-blue" alt="version"/></a>
+<a href="https://www.waterfox.com/download"><img src="https://img.shields.io/badge/version-6.6.14-blue" alt="version"/></a>
 <a href="https://github.com/Hythera/nix-waterfox/stargazers"><img src="https://img.shields.io/github/stars/Hythera/nix-waterfox" alt="stars"/>
 </p>
 
