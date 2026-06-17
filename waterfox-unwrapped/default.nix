@@ -1,56 +1,61 @@
 {
-  apple-sdk_15,
   buildMozillaMach,
   fetchFromGitHub,
-  icu,
   lib,
   stdenv,
 }:
-buildMozillaMach rec {
+
+(buildMozillaMach rec {
   pname = "waterfox";
-  version = "6.6.14";
+  version = "140.12.0";
+  packageVersion = "6.6.14";
   applicationName = "Waterfox";
   binaryName = "waterfox";
   branding = "waterfox/browser/branding";
+  requireSigning = false;
   src = fetchFromGitHub {
     owner = "BrowserWorks";
     repo = "Waterfox";
-    tag = version;
+    tag = packageVersion;
     hash = "sha256-SjN/LotSmTEePS/eECUvJkiPiv5NfnSxME1EULHuhDY=";
     fetchSubmodules = true;
+    # We can't clone the submodules with SSH.
     preFetch = ''
       export GIT_CONFIG_COUNT=1
       export GIT_CONFIG_KEY_0=url.https://github.com/.insteadOf
       export GIT_CONFIG_VALUE_0=git@github.com:
-    ''; # We can't clone with SSH here
+    '';
   };
 
-  extraBuildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
-    apple-sdk_15
-  ];
-
-  extraNativeBuildInputs = [
-    icu
-  ];
-
   extraPatches = [
+    # Some of the icons are missing and cause the build to crash. Removing them fixes the issue.
     ./remove-missing-icons.patch
-  ]; # Some of the icons are missing and cause the build to crash. Removing them fixes the issue
+  ];
 
   extraPostPatch = ''
+    # `buildMozillaMach` will take care of the build.
     rm .mozconfig .mozconfig-*
-  ''; # buildMozillaMach will take care of the build arguments
+
+    # Override the default Firefox version.
+    for fn in browser/config/version.txt browser/config/version_display.txt; do
+      echo "${packageVersion}" > "$fn"
+    done
+  '';
 
   meta = {
     broken = stdenv.buildPlatform.is32bit;
     # since Firefox 60, build on 32-bit platforms fails with "out of memory".
     # not in `badPlatforms` because cross-compilation on 64-bit machine might work.
-    changelog = "https://github.com/BrowserWorks/waterfox/releases/tag/${version}";
-    description = "A privacy-focused Firefox Fork";
+    changelog = "https://github.com/BrowserWorks/waterfox/releases/tag/${src.tag}";
+    description = "Privacy-focused Firefox Fork";
     homepage = "https://www.waterfox.com";
     license = lib.licenses.mpl20;
     mainProgram = "waterfox";
     maxSilent = 14400; # 4h, double the default of 7200s (c.f. #129212, #129115)
     platforms = lib.platforms.unix;
   };
-}
+  updateScript = ./update.sh;
+}).override
+  {
+    crashreporterSupport = false;
+  }
