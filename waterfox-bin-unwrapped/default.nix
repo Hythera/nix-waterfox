@@ -24,7 +24,6 @@ let
   binaryName = "waterfox";
   mozillaPlatforms = {
     aarch64-darwin = "Darwin_x86_64-aarch64";
-    x86_64-darwin = "Darwin_x86_64-aarch64";
     x86_64-linux = "Linux_x86_64";
   };
 
