@@ -3,7 +3,7 @@
 
 set -eou pipefail
 
-latestVersion=$(curl ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} -sL https://api.github.com/repos/BrowserWorks/Waterfox/releases | jq -r '.[0].tag_name')
+latestVersion=$(curl ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} -sL https://api.github.com/repos/BrowserWorks/Waterfox/releases/latest | jq -r '.tag_name')
 currentVersion=$(nix eval --raw .#waterfox-bin-unwrapped.version)
 
 echo "latest  version: $latestVersion"
