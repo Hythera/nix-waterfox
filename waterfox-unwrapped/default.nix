@@ -8,7 +8,7 @@
 (buildMozillaMach rec {
   pname = "waterfox";
   version = "140.13.0";
-  packageVersion = "6.6.15";
+  packageVersion = "6.6.17";
   applicationName = "Waterfox";
   binaryName = "waterfox";
   branding = "waterfox/browser/branding";
@@ -17,7 +17,7 @@
     owner = "BrowserWorks";
     repo = "Waterfox";
     tag = packageVersion;
-    hash = "sha256-pwEG42CTXjT//xIoESkhB1OD3G1L3Dp//mXjG9a9k5I=";
+    hash = "sha256-bFYRdEImKTwD456yc9lN+Dx83q70WZXjwD3Qo2SRpnQ=";
     fetchSubmodules = true;
     # We can't clone the submodules with SSH.
     preFetch = ''
